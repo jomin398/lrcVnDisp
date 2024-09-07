@@ -1,0 +1,8 @@
+[00:00.000] label("system") bg("sakura2.jpg","fadeIn") tEffect({"e":"sakura","c": 2, "s": { "top": "5px" }}) tAni("zoomInRight") tShadowCol("#bd0094") tHlCol("#ffcff5") tCol("#ffffff") tPos("center")
+[00:16.248] label("미쿠")
+[00:28.803] label("미쿠") tPos("default")
+[02:29.281] tPos("center") bg("sakura1.png","fadeIn")
+[02:35.149] tPos("default")
+[04:10.749] tPos("center") bg("sakura3.jpg","fadeIn")
+[04:48.646] tPos("center")
+[05:08.773] tPos("default")

@@ -1,0 +1,19 @@
+@import url(./keyframe/zoom.css);
+@import url(./keyframe/bounce.css);
+@import url(./keyframe/fade.css);
+@import url(./keyframe/flip.css);
+@import url(./keyframe/rotate.css);
+@import url(./keyframe/slide.css);
+
+@keyframes rollIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0) rotate3d(0, 0, 1, -120deg);
+    text-shadow: 2px 2px 2px var(--hlCol);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    text-shadow: 2px 2px 2px var(--hlCol);
+  }
+}

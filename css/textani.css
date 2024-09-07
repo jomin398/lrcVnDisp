@@ -1,0 +1,127 @@
+.tAni-bounceIn {
+  animation-name: bounceIn;
+
+  transform-origin: center bottom;
+}
+
+.tAni-bounceInDown {
+  animation-name: bounceInDown;
+
+  transform-origin: center bottom;
+}
+
+.tAni-bounceInLeft {
+  animation-name: bounceInLeft;
+
+  transform-origin: center bottom;
+}
+
+.tAni-bounceInRight {
+  animation-name: bounceInRight;
+
+  transform-origin: center bottom;
+}
+
+.tAni-bounceInUp {
+  animation-name: bounceInUp;
+
+  transform-origin: center bottom;
+}
+
+.tAni-fadeIn {
+  animation-name: fadeIn;
+}
+
+.tAni-fadeInDown {
+  animation-name: fadeInDown;
+}
+
+.tAni-fadeInLeft {
+  animation-name: fadeInLeft;
+}
+
+.tAni-fadeInRight {
+  animation-name: fadeInRight;
+}
+
+.tAni-fadeInUp {
+  animation-name: fadeInUp;
+}
+
+.tAni-rotateIn {
+  animation-name: rotateIn;
+}
+
+.tAni-rotateInDownLeft {
+  animation-name: rotateInDownLeft;
+}
+
+.tAni-rotateInDownRight {
+  animation-name: rotateInDownRight;
+}
+
+.tAni-rotateInUpLeft {
+  animation-name: rotateInUpLeft;
+}
+
+.tAni-rotateInUpRight {
+  animation-name: rotateInUpRight;
+}
+
+.tAni-slideInUp {
+  animation-name: slideInUp;
+}
+
+.tAni-slideInDown {
+  animation-name: slideInDown;
+}
+
+.tAni-slideInLeft {
+  animation-name: slideInLeft;
+}
+
+.tAni-slideInRight {
+  animation-name: slideInRight;
+}
+
+.tAni-zoomIn {
+  animation-name: zoomIn;
+}
+
+.tAni-zoomInDown {
+  animation-name: zoomInDown;
+}
+
+.tAni-zoomInUp {
+  animation-name: zoomInUp;
+}
+
+.tAni-zoomInLeft {
+  animation-name: zoomInLeft;
+}
+
+.tAni-zoomInRight {
+  animation-name: zoomInRight;
+}
+
+.tAni-rollIn {
+  animation-name: rollIn;
+}
+
+.tAni-flipInX {
+  backface-visibility: visible !important;
+
+  animation-name: flipInX;
+}
+
+.tAni-flipInY {
+  backface-visibility: visible !important;
+
+  animation-name: flipInY;
+}
+
+.tAni-lightSpeedIn {
+  animation-name: lightSpeedIn;
+
+  animation-timing-function: ease-out;
+}

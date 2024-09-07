@@ -1,0 +1,63 @@
+#dialog {
+  z-index: 1200;
+  transform: translateZ(0);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+#dialog header ul {
+  list-style: none;
+}
+#dialog .name {
+  color: #fff;
+  text-shadow: 0 0 3px #07a;
+  font-size: 25px;
+  width: 17em;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px 5px 0 0;
+  font-weight: bolder;
+  min-height: 3.2em;
+  overflow: auto;
+}
+#dialog .contentWrapper {
+  overflow: hidden;
+}
+#dialog .content {
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 0 5px 5px 5px;
+  height: 6em;
+}
+#dialog .content .text {
+  line-height: 1.5em;
+  color: var(--tCol);
+  font-size: 2.2em;
+  font-weight: bold;
+}
+#dialog .content .text span {
+  transform: translateZ(0);
+}
+#dialog .content#ja .text {
+  letter-spacing: 2px;
+}
+.pos-center {
+  justify-content: center;
+  align-items: center;
+}
+.pos-center .text {
+  text-align: center;
+}
+#dialog .controls li {
+  color: #fff;
+  text-shadow: 0 0 3px #07a;
+  font-size: 1.1em;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 8px 15px;
+  float: left;
+  transition: background 0.3s;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  height: 1.6em;
+}

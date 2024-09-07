@@ -1,0 +1,37 @@
+#dialog .contentWrapper {
+  background: linear-gradient(to bottom, #ffccf9 0%, transparent 100%);
+  border: 2px solid white;
+  outline: 0.1px solid #00000059;
+  position: relative;
+  padding: 0 1.5em;
+}
+#dialog .content {
+  background-color: transparent;
+  background: transparent;
+}
+#dialog .contentWrapper .text {
+  font-family: "Goyang", Arial !important;
+  font-weight: normal !important;
+}
+
+#dialog .contentWrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="%23ff58cc"><circle cx="5" cy="5" r="5"/><circle cx="15" cy="15" r="5"/></svg>')
+    repeat;
+  opacity: 0.2; /* 투명도 조절 */
+  border-radius: 15px;
+  z-index: 0;
+}
+
+@font-face {
+  font-family: "Goyang";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Goyang.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
