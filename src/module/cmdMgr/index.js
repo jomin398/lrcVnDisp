@@ -39,7 +39,8 @@ export default class CmdMgr extends Lyric {
             tShadowCol: "#bd0094",
             tHlCol: "#ffcff5",
             tCol: "#ffffff",
-            tSpeed: 500
+            tSpeed: 500,
+            bgCol: null,
         }
     }
     #updateBg(setting) {
@@ -56,7 +57,7 @@ export default class CmdMgr extends Lyric {
 
         let bgiSearchResult = bgiSearch(src, this.vn.assets.images);
 
-        let bgElm = $(`<img  class="bg tAni-${aniName??"noAni"}" src="${bgiSearchResult ?? src}">`);
+        let bgElm = $(`<img  class="bg tAni-${aniName ?? "noAni"}" src="${bgiSearchResult ?? src}">`);
         bgWrap.append(bgElm);
         bgElm.css({
             "animation-duration": "0.5s",
@@ -76,10 +77,12 @@ export default class CmdMgr extends Lyric {
         if (data.tEffect && (data.tEffect.e != null)) this.currentLine.tEffect = data.tEffect;
         if (data.bg) this.currentLine.bg = data.bg;
         if (data.tSpeed) this.currentLine.tSpeed = Number(data.tSpeed);
+        if (data.bgCol) this.currentLine.bgCol = data.bgCol;
     }
     #onPlay(_n, o) {
         this.#updateCmd(o.text);
-        this.#updateBg(this.currentLine.bg)
+        this.#updateBg(this.currentLine.bg);
+        if (this.currentLine.bgCol) this.vn.container.css('background-color', this.currentLine.bgCol);
     }
     _handleMaxLine() {
         this.onPlay(this.maxLine, this.lines[this.maxLine]);

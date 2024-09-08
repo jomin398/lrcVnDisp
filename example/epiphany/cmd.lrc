@@ -1,4 +1,4 @@
-[00:00.000] tPos("center") bg("monika1", "fadeIn") tShadowCol("#000000") tHlCol("#7c7c7c") tCol("#ffffff") label("Monika (CV.carimellevo)") tAni("zoomInRight") tSpeed("100")
+[00:00.000] tPos("center") bg("monika1", "fadeIn") tShadowCol("#000000") tHlCol("#7c7c7c") tCol("#ffffff") label("Monika (CV.carimellevo)") tAni("zoomInRight") tSpeed("100") bgCol("#000000")
 [00:01.783] tPos("default")
 [00:03.576] tPos("center")
 [00:05.355] tPos("default")

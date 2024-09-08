@@ -13,7 +13,7 @@ export default function parseCmd(string) {
         ?.pop();
     
     // tAni, tShadowCol, tHlCol, tCol, tPos, label 추출
-    const singleArgFunctions = ["tAni", "tShadowCol", "tHlCol", "tCol", "tPos", "label", "tSpeed"];
+    const singleArgFunctions = ["tAni", "tShadowCol", "tHlCol", "tCol", "tPos", "label", "tSpeed", "bgCol"];
     const singleArgMatches = {};
 
     singleArgFunctions.forEach((func) => {
