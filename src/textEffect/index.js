@@ -7,7 +7,8 @@
  * @prop {String} baseUrl base URL
 */
 
-import sakuraFall from "./sakura/index.js";
+import lightBead from "./lightBead/index.js";
+import sakura from "./sakura/index.js";
 
 
 const defaultOptions = {
@@ -16,7 +17,7 @@ const defaultOptions = {
     "s": {
         "top": "5px"
     },
-    "styleFiles": ["sakura.css"],
+
     "baseUrl": "./src/textEffect/"
 };
 export default class TextEffect {
@@ -30,11 +31,13 @@ export default class TextEffect {
          * 
          * @type {defaultOptions} options 
          */
-        this.options = { ...defaultOptions, ...options };
+        this.options = Object.assign(defaultOptions, options);
         this.inited = false;
     }
     #appendStyleToHead() {
-        // console.log(this.options.styleFiles);
+
+
+        this.options = Object.assign(this.effect.effectDefOpt, this.options);
         this.options.styleFiles.map(url => {
             url = url ? `${this.options.baseUrl}${this.options.e}/${url}` : null;
 
@@ -46,10 +49,19 @@ export default class TextEffect {
         return JSON.parse(string);
     }
 
-    get effectElem() {
-        let elm = "";
-        if (this.options.e == "sakura") elm = sakuraFall(this.options);
-        return elm;
+    get effect() {
+        const effects = {
+            sakura: sakura,
+            lightBead: lightBead
+        };
+
+        const effectFunc = effects[this.options.e];
+        if (effectFunc) {
+            const { container, defaultoptions } = effectFunc(this.options);
+            return { elm: container, effectDefOpt: defaultoptions };
+        }
+
+        return { elm: "", effectDefOpt: {} };
     }
     init() {
         if (this.inited) return;
@@ -62,6 +74,6 @@ export default class TextEffect {
     }
     applyEffect(charElement) {
         if (!this.inited) return;
-        charElement.append(this.effectElem);
+        charElement.append(this.effect.elm);
     }
 }

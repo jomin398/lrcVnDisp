@@ -42,6 +42,8 @@ export class TextRenderer {
         this.dialogs = dialogs;
         this.prevText = null;
         this.prevTextClass = null;
+        /** @type {Boolean} 기존 택스트에 추가여부 */
+        this.allowAppendText = false;
         /** @type {TextEffect} */
         this.textEffect = tEffect;
 
@@ -112,7 +114,7 @@ export class TextRenderer {
         this.textEffect = new TextEffect(effectCfg);
         if (this.textEffect.inited) return;
         this.textEffect.init()
-        this.#applyTextEffect =(e)=> this.textEffect.applyEffect(e);
+        this.#applyTextEffect = (e) => this.textEffect.applyEffect(e);
     }
     show() {
         if (this.dialogs) this.data = this.dialogs[this.lineIndex];
@@ -120,10 +122,8 @@ export class TextRenderer {
         let textElm = this.el;
         const textWrapElm = textElm.parent();
         let pos = "tl";
-
         let tSpeed = this.textApprochDelay;
-
-        // this.cmdMgr
+        let isAllowAppending = this.allowAppendText;
         if (!this.isCmdMode) {
             tSpeed = this.textApprochDelay;
             pos = this.data.pos;
@@ -131,52 +131,69 @@ export class TextRenderer {
             let line = this.cmdMgr.currentLine;
             tSpeed = line.tSpeed;
             pos = (line.tPos == "default" ? "tl" : line.tPos) ?? "tl";
+            isAllowAppending = line.tAppend ?? false;
         }
-        this.applyTextPos(textWrapElm, pos)
-        if (this.data.text == this.prevText) return;
 
-
-        this.length = this.data.text.length;
+        this.applyTextPos(textWrapElm, pos);
+        const newText = this.data.text;
+        if (newText === this.prevText) return;
+        this.length = newText.length;
         this.stopTimer();
-
-
         this.isPlaying = true;
-        this.prevText = this.data.text;
-        textElm.html(this.splitText(this.data.text));
-
-        const spanElements = textElm.find('span');
-        spanElements.hide();
-        this.initTextEffect()
-        // 캐싱된 요소들을 활용해 반복작업을 최적화
-        for (let i = 0; i < this.length; i++) {
-            this.showChar(i, spanElements.eq(i), textElm);
-        }
-        textWrapElm.parent().find(".name")?.html(this.data.name);
-        textWrapElm.parent().parent().find(".name")?.html(this.data.name);
-
-
-        // 애니메이션이 끝나고 스타일 제거
+        this.prevText = newText;
+        // 대화 이름 표시
+        this.updateNameDisplay(textWrapElm);
+        if (isAllowAppending) { this.appendText(textElm, newText) } else this.replaceText(textElm, newText);
         setTimeout(() => {
             this.stop();
-            //spanElements.css("text-shadow", "unset");
-            if (this.lineIndex) this.lineIndex++
+            if (this.lineIndex) this.lineIndex++;
         }, tSpeed + (tSpeed / 10) * this.length);
+    }
+    appendText(textElm, newText) {
+        const existingSpans = textElm.find('span');
+        const existingLength = existingSpans.length;
+
+        textElm.html(textElm.html() + this.splitText(" " + newText));
+
+        existingSpans.hide();
+        const newSpans = textElm.find('span').slice(existingLength);
+        this.animateText(newSpans, textElm);
+    };
+    // 전체 텍스트를 새로 교체
+    replaceText(textElm, newText) {
+        textElm.html(this.splitText(newText));
+        const spanElements = textElm.find('span');
+        this.animateText(spanElements, textElm);
+    }
+    animateText(spans, textElm) {
+        this.initTextEffect();
+        spans.hide();
+        spans.each((index, el) => {
+            this.showChar(index, $(el), textElm);
+        });
+    };
+
+    updateNameDisplay(textWrapElm) {
+        const nameElement = textWrapElm.parent().find(".name");
+        const parentNameElement = textWrapElm.parent().parent().find(".name");
+
+        if (nameElement.length) nameElement.html(this.data.name);
+        if (parentNameElement.length) parentNameElement.html(this.data.name);
     }
     showChar(i, charElement) {
         let tSpeed = this.textApprochDelay;
         let anistyle = this.data.anistyle ?? "zoomInRight";
+        let tShadow = this.data.tShadow ?? "2px 2px 2px var(--tShadowCol)";
         if (this.isCmdMode) {
             let line = this.cmdMgr.currentLine;
             tSpeed = line.tSpeed ?? tSpeed;
             anistyle = line.tAni; //rotateInUpLeft
+            tShadow = line.tShadow;
         }
         const animDuration = tSpeed / 1000 + 's'; //seconds
         const delay = i * (tSpeed / 10); // milliseconds
-        charElement.css("text-shadow", "2px 2px 2px var(--tShadowCol)");
-
+        charElement.css("text-shadow", tShadow);
         this.#applyTextEffect(charElement);
-
-
         this.timers[i] = setTimeout(() => {
             charElement.css({
                 "display": "inline-block",

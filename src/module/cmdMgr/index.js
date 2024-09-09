@@ -7,11 +7,6 @@ import Lyric from "../lyric/index.js";
  * @prop {CSSStyleDeclaration} style
  * @prop {any}
  */
-const sakuraEffectOpt = {
-    name: "sakura",
-    style: { "top": "5px" },
-    c: 2,
-}
 function bgiSearch(search, filelist) {
     let r = filelist.filter(file => file.name.includes(search))[0];
     if (r) r = URL.createObjectURL(r);
@@ -37,10 +32,13 @@ export default class CmdMgr extends Lyric {
             tPos: "tl",
             tAni: "zoomInRight",
             tShadowCol: "#bd0094",
+            tShadow: "2px 2px 2px #bd0094",
             tHlCol: "#ffcff5",
             tCol: "#ffffff",
             tSpeed: 500,
             bgCol: null,
+            /** @type {Boolean} allow Text Append */
+            tAppend: false,
         }
     }
     #updateBg(setting) {
@@ -71,13 +69,18 @@ export default class CmdMgr extends Lyric {
         if (data.label) this.currentLine.label = data.label == "null" ? " " : data.label;
         if (data.tPos) this.currentLine.tPos = data.tPos == "default" ? "tl" : data.tPos;
         if (data.tAni) this.currentLine.tAni = data.tAni;
-        if (data.tShadowCol) this.currentLine.tShadowCol = data.tShadowCol;
+        if (data.tShadowCol) {
+            this.currentLine.tShadowCol = data.tShadowCol;
+            this.currentLine.tShadow = `2px 2px 2px ${data.tShadowCol}`;
+        }
+        if (data.tShadow) this.currentLine.tShadow = data.tShadow;
         if (data.tHlCol) this.currentLine.tHlCol = data.tHlCol;
         if (data.tCol) this.currentLine.tCol = data.tCol;
         if (data.tEffect && (data.tEffect.e != null)) this.currentLine.tEffect = data.tEffect;
         if (data.bg) this.currentLine.bg = data.bg;
         if (data.tSpeed) this.currentLine.tSpeed = Number(data.tSpeed);
         if (data.bgCol) this.currentLine.bgCol = data.bgCol;
+        if (data.tAppend != undefined) this.currentLine.tAppend = data.tAppend == "true" ? true : false;
     }
     #onPlay(_n, o) {
         this.#updateCmd(o.text);

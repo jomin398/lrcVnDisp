@@ -21,6 +21,8 @@ The `.lrc` file format is traditionally used to provide time-stamped lyrics for 
 ###  Visual Effect Commands
 - `tShadowCol("#000000")`:
     - Sets the shadow color of the text to `#000000` (black).
+- `tShadow("2px 2px 2px #ffffff")`:
+    - Sets the text-shadow with `#ffffff` (white), witch overwrites `tShadowCol`.
 - `tHlCol("#7c7c7c")`:
     - Sets the highlight color of the text to `#7c7c7c` (a shade of gray).
 - `tCol("#ffffff")`:
@@ -39,6 +41,8 @@ The `.lrc` file format is traditionally used to provide time-stamped lyrics for 
     - pass the `"default"` as the default position as `"tl"` (top left)
 - `tEffect(...)`:
     - must be JSON Object format. (see [text Effect Settings](#text-effect-settings))
+- `tAppend("true")`:
+    - sets the text Append mode to true (allows to append text into existing textbox contents)
 
 # Text Effect Settings
 Text Effect 는 JSON 형식으로 작성되어야되며, 벛꽃효과를 예시로 설명 하면 다음과 같은 속성들을 포함하고 있습니다.

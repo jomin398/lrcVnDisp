@@ -1,0 +1,149 @@
+.container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightBead {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.lightBead span {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 0.3vw;
+  height: 0.3vw;
+  border-radius: 50%;
+  background-color: rgba(255, 223, 0, 0.8); /* 노란색 알갱이 */
+  box-shadow: 0 0 10px 5px rgba(255, 223, 0, 0.5); /* 빛나는 효과 */
+}
+
+/* 애니메이션 설정 */
+.lightBead span:nth-child(2n + 1) {
+  animation: lightBead-anim-1 10s 0s linear infinite;
+}
+
+.lightBead span:nth-child(2n + 2) {
+  animation: lightBead-anim-2 10s 0s linear infinite;
+}
+
+/* 각 알갱이의 위치와 딜레이 설정 */
+.lightBead span {
+  position: absolute;
+  left: calc(10% * (var(--i) - 1));
+  animation-delay: 0s;
+}
+
+.lightBead span:nth-child(1) {
+  --i: 1;
+}
+.lightBead span:nth-child(2) {
+  --i: 2;
+}
+.lightBead span:nth-child(3) {
+  --i: 3;
+}
+.lightBead span:nth-child(4) {
+  --i: 4;
+}
+.lightBead span:nth-child(5) {
+  --i: 5;
+}
+.lightBead span:nth-child(6) {
+  --i: 6;
+}
+.lightBead span:nth-child(7) {
+  --i: 7;
+}
+.lightBead span:nth-child(8) {
+  --i: 8;
+}
+.lightBead span:nth-child(9) {
+  --i: 9;
+}
+.lightBead span:nth-child(10) {
+  --i: 10;
+}
+
+.lightBead span:nth-child(3n + 1),
+.lightBead span:nth-child(4n + 1) {
+  animation-duration: 5s;
+}
+
+.lightBead span:nth-child(4n + 2) {
+  animation-duration: 12s;
+}
+
+.lightBead span:nth-child(4n + 3) {
+  animation-duration: 8s;
+}
+
+.lightBead span:nth-child(4n + 4) {
+  animation-duration: 6s;
+}
+
+/* 애니메이션 딜레이 */
+.lightBead span:nth-child(1) {
+  animation-delay: 0s;
+}
+.lightBead span:nth-child(2) {
+  animation-delay: 2s;
+}
+.lightBead span:nth-child(3) {
+  animation-delay: 4s;
+}
+.lightBead span:nth-child(4) {
+  animation-delay: 6s;
+}
+.lightBead span:nth-child(5) {
+  animation-delay: 8s;
+}
+.lightBead span:nth-child(6) {
+  animation-delay: 10s;
+}
+.lightBead span:nth-child(7) {
+  animation-delay: 12s;
+}
+.lightBead span:nth-child(8) {
+  animation-delay: 14s;
+}
+.lightBead span:nth-child(9) {
+  animation-delay: 16s;
+}
+.lightBead span:nth-child(10) {
+  animation-delay: 18s;
+}
+
+@keyframes lightBead-anim-1 {
+  0% {
+    top: -10%;
+    transform: translateX(0);
+  }
+
+  100% {
+    top: 100%;
+    transform: translateX(15vw);
+  }
+}
+
+@keyframes lightBead-anim-2 {
+  0% {
+    top: -10%;
+    transform: translateX(0);
+  }
+
+  100% {
+    top: 100%;
+    transform: translateX(-15vw);
+  }
+}

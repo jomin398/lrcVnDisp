@@ -11,9 +11,9 @@ export default function parseCmd(string) {
     const tEffectMatches = [...string.matchAll(tEffectRegex)]
         .map((m) => JSON.parse(m[1]))
         ?.pop();
-    
+
     // tAni, tShadowCol, tHlCol, tCol, tPos, label 추출
-    const singleArgFunctions = ["tAni", "tShadowCol", "tHlCol", "tCol", "tPos", "label", "tSpeed", "bgCol"];
+    const singleArgFunctions = ["tAni", "tShadowCol", "tHlCol", "tCol", "tPos", "label", "tSpeed", "bgCol", "tAppend", "tShadow"];
     const singleArgMatches = {};
 
     singleArgFunctions.forEach((func) => {

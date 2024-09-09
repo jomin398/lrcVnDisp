@@ -46,12 +46,17 @@ export default class VnDisp {
     }
     async init() {
         this.textAnims = [];
-        //console.log(this.options.assets);
-
         if (this.assets.cmd) {
             this.cmdMgr = new CmdMgr({ ...this.options, isCmdLine: true, vnDisp: this, offset: 0 });
             const cmds = this.assets.cmd instanceof String ? await (await fetch(this.assets.cmd)).text() : await this.assets.cmd.text();
             this.cmdMgr.setLyric(cmds);
+
+            let hasBg = this.cmdMgr.lines.map(line => line.text.bg?.src).some(src => src !== null) ?? false;
+            /*
+            명령어에서 한번이라도 배경 이미지 사용하지 않으면 검은 화면이라 textbox 가 보이지 않음.
+            그래서 noBg라고 class 를 붙여서 css 로 textbox 를 보이게 처리.
+            */
+            if (!hasBg) this.container.find("#dialog").addClass("noBg");
         }
         if (this.assets.styles) {
             this.assets.styles.map(cssFile => {

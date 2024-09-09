@@ -91,11 +91,12 @@ export class LyricVn extends Lyric {
     }
     #cmdGen(textArr) {
         if (!this.vnMgr.cmdMgr) return;
-        let { tPos, tAni, label, tHlCol, tShadowCol, tCol } = this.cmdLine;
+        let { tPos, tAni, label, tHlCol, tShadowCol, tCol, tShadow } = this.cmdLine;
         $(`.contentWrapper`).css({
             "--tCol": tCol,
             "--hlCol": tHlCol,
-            "--tShadowCol": tShadowCol
+            "--tShadowCol": tShadowCol,
+            "--tShadow": tShadow
         })
         this.vnMgr.textAnims.forEach((anim, i) => {
             let t = textArr[i];
@@ -115,12 +116,13 @@ export class LyricVn extends Lyric {
         const isInterlude = this.#isInterlude(textArr)
 
         const { textAnims, options } = this.vnMgr;
-        let { overwriteName, colorByText, hlCol, tCol, tShadowCol } = options;
+        let { overwriteName, colorByText, hlCol, tCol, tShadowCol, tShadow } = options;
 
         $(`.contentWrapper`).css({
             "--tCol": tCol,
             "--hlCol": hlCol,
-            "--tShadowCol": tShadowCol
+            "--tShadowCol": tShadowCol,
+            "--tShadow": tShadow
         })
 
         // 간주 중인지 확인
