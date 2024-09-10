@@ -1,4 +1,5 @@
-export default function parseCmd(string) {
+export const supportCmds = ["bg", "tEffect", "tAni", "tShadowCol", "tHlCol", "tCol", "tPos", "label", "tSpeed", "bgCol", "tAppend", "tShadow", "ytVod", "lrcOff"];
+export function parseCmd(string) {
     // bg 함수 인자 추출
     const bgRegex = /bg\("([^"]*)",?([^)]*)\)/g;
     const bgMatches = [...string.matchAll(bgRegex)].map((match) => [
@@ -11,18 +12,18 @@ export default function parseCmd(string) {
     const tEffectMatches = [...string.matchAll(tEffectRegex)]
         .map((m) => JSON.parse(m[1]))
         ?.pop();
-
-    // tAni, tShadowCol, tHlCol, tCol, tPos, label 추출
-    const singleArgFunctions = ["tAni", "tShadowCol", "tHlCol", "tCol", "tPos", "label", "tSpeed", "bgCol", "tAppend", "tShadow"];
+    const singleArgFunctions = supportCmds.slice(2);
     const singleArgMatches = {};
 
     singleArgFunctions.forEach((func) => {
         const regex = new RegExp(`${func}\\("([^"]*)"\\)`, "g");
-        singleArgMatches[func] = [...string.matchAll(regex)].map(
+        let arr = [...string.matchAll(regex)].map(
             (match) => match[1]
-        ).pop();
+        )
+        let d = arr.pop();
+        if (d) singleArgMatches[func] = d;
     });
-    return {
+    const result = {
         bg: {
             src: bgMatches[0] ? bgMatches[0][0] : null,
             aniName: bgMatches[0] ? bgMatches[0][1] : null,
@@ -32,4 +33,5 @@ export default function parseCmd(string) {
         } || null,
         ...singleArgMatches,
     };
+    return result;
 }

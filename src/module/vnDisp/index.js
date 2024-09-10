@@ -4,7 +4,9 @@ import { LyricVn } from "../lrcVn/index.js";
 import { initWavesurfer } from "../../initWavesurfer.js";
 import { addEventSubscribe } from "../util/index.js";
 import { default as CmdMgr } from "../cmdMgr/index.js";
-
+import Timer from "wavesurfer/timer.js";
+import WaveSurfer from "wavesurfer.js";
+import { YTVideoPlayer } from "../ytVideoPlayer/index.js";
 
 function getjsonFile(scripts) {
     return scripts.filter(file => file.name.endsWith(".json"))[0];
@@ -24,7 +26,10 @@ export default class VnDisp {
             $("body").append(this.options.defaultTpl);
             this.container = $(this.options.container);
         }
+        /** @type {?WaveSurfer} */
         this.wavesurfer = null;
+        /** @type {?Object} ytPlayer */
+        this.ytPlayer = null;
         /** @type {?TextRenderer[]} */
         this.textAnims = null;
         /** @type {?LyricVn} */
@@ -32,6 +37,7 @@ export default class VnDisp {
         this.cmdMgr = null;
         /** @type {?Boolean} toggle to bind onclick on dialog box */
         this.textVnMode = false;
+        this.subscriptions = [];
         window.vn = this;
     }
 
@@ -105,15 +111,23 @@ export default class VnDisp {
     }
 
     async initAudio() {
-        if (this.assets.audios) {
+        if (this.assets.audios && this.assets.audios.length) {
             this.wavesurfer = await initWavesurfer(this.assets.audios[0]);
             this.play = () => this.wavesurfer.play();
             this.pause = () => this.wavesurfer.pause();
             this.wavesurfer.on('interaction', this.play);
         }
     }
-
+    tickCallback(currentTime) {
+        if (this.cmdMgr) this.cmdMgr._refresh(currentTime);
+        this.lyricMgr._refresh(currentTime);
+    }
     syncAudioWithLyrics() {
+        if (this.cmdMgr && this.lyricMgr && this.cmdMgr.initLine.text.lrcOff) {
+            let offset = this.cmdMgr.currentLine.lrcOff ?? 0;
+            this.lyricMgr.offset = offset;
+            this.cmdMgr.offset = offset;
+        }
         if (this.wavesurfer && this.lyricMgr) {
             addEventSubscribe(
                 this.wavesurfer.subscriptions,
@@ -122,8 +136,7 @@ export default class VnDisp {
                 () => {
                     if (!this.wavesurfer.isSeeking()) {
                         let currentTime = this.wavesurfer.getCurrentTime() * 1e3;
-                        if (this.cmdMgr) this.cmdMgr._refresh(currentTime);
-                        this.lyricMgr._refresh(currentTime);
+                        this.tickCallback(currentTime);
                     }
                 }
             );
@@ -132,6 +145,10 @@ export default class VnDisp {
                 if (!this.lyricMgr.lines.length) return;
                 this.wavesurfer.play();
             };
+        } else if (this.cmdMgr && this.cmdMgr.currentLine.ytVod && this.lyricMgr) {
+            this.ytPlayer = new YTVideoPlayer({ cmdMgr: this.cmdMgr, lyricMgr: this.lyricMgr });
+            this.ytPlayer.tickCallback = this.tickCallback;
+            this.ytPlayer.initialize();
         }
     }
 

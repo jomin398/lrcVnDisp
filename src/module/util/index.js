@@ -1,4 +1,3 @@
-import EventEmitter from "wavesurfer/event-emitter.js";
 export { default as isJQuery } from "./isJQ.js";
 export { default as EventEmitter } from "./event-emitter.js";
 export { default as fileReadText } from "./fileReadText.js";

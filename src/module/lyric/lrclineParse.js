@@ -1,5 +1,5 @@
 import { formatTimeLabel } from "./formatTimeLabel.js";
-import { default as parseCmd } from "./parseCmd.js";
+import { parseCmd } from "./parseCmd.js";
 import { parseExtendedLyric } from "./parseExtendedLyric.js";
 import { timeFieldExp, timeExp } from "./timeFieldExp.js";
 

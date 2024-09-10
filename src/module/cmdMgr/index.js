@@ -39,7 +39,18 @@ export default class CmdMgr extends Lyric {
             bgCol: null,
             /** @type {Boolean} allow Text Append */
             tAppend: false,
+            /** @type {?String} youtube url*/
+            ytVod: null,
+            /** @type {Number} lyric Offset time in milliseconds */
+            lrcOff: 0,
         }
+        this.onSetLyric = () => {
+            this.#onPlay(0, this.lines[0]);
+        }
+    }
+    /** @returns {{time:Number,text:Object|String,extendedLyrics:String[]}} */
+    get initLine() {
+        return this.lines[0];
     }
     #updateBg(setting) {
 
@@ -81,6 +92,8 @@ export default class CmdMgr extends Lyric {
         if (data.tSpeed) this.currentLine.tSpeed = Number(data.tSpeed);
         if (data.bgCol) this.currentLine.bgCol = data.bgCol;
         if (data.tAppend != undefined) this.currentLine.tAppend = data.tAppend == "true" ? true : false;
+        if (data.ytVod) this.currentLine.ytVod = data.ytVod;
+        if (data.lrcOff) this.currentLine.lrcOff = Number(data.lrcOff);
     }
     #onPlay(_n, o) {
         this.#updateCmd(o.text);

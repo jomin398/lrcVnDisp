@@ -6,6 +6,8 @@ html,
 body {
   width: 100%;
   height: 100%;
+  padding: 0;
+  margin: 0;
 }
 #vnDisp {
   background-color: #000;
@@ -36,4 +38,8 @@ body {
   width: 100%;
   position: absolute;
   padding: 0.5rem;
+}
+.my-player-dimensions {
+  width: 100%;
+  height: 100%;
 }
