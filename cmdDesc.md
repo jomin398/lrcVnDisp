@@ -43,7 +43,11 @@ The `.lrc` file format is traditionally used to provide time-stamped lyrics for 
     - must be JSON Object format. (see [text Effect Settings](#text-effect-settings))
 - `tAppend("true")`:
     - sets the text Append mode to true (allows to append text into existing textbox contents)
-
+- `lrcOff("0")`:
+    - sets the offset of Lyric and Cmd excution time (in milliseconds)
+- `ytVod("url")`:
+    - set background as the Youtube Video with video url.
+ 
 # Text Effect Settings
 Text Effect 는 JSON 형식으로 작성되어야되며, 벛꽃효과를 예시로 설명 하면 다음과 같은 속성들을 포함하고 있습니다.
 ```json

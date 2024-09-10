@@ -15,7 +15,8 @@ this project refers to [liriliri's Project](https://github.com/liriliri/webvn)
 3. multiple stylesheet (`.css` ) files
 4. multiple [text Animations](#supported-text-animations)
 5. synchronized command lines as well as lyrics. (`cmd.lrc`) [command line formatting guide](./cmdDesc.md)
-6. textEffects
+6. can set bg as youTube video with command line (`ytVod`)
+7. textEffects
     - sakura
 
 # todo
