@@ -43,6 +43,8 @@ export default class CmdMgr extends Lyric {
             ytVod: null,
             /** @type {Number} lyric Offset time in milliseconds */
             lrcOff: 0,
+            /** @type {Boolean} textBox visible */
+            hideVn: false
         }
         this.onSetLyric = () => {
             this.#onPlay(0, this.lines[0]);
@@ -94,11 +96,21 @@ export default class CmdMgr extends Lyric {
         if (data.tAppend != undefined) this.currentLine.tAppend = data.tAppend == "true" ? true : false;
         if (data.ytVod) this.currentLine.ytVod = data.ytVod;
         if (data.lrcOff) this.currentLine.lrcOff = Number(data.lrcOff);
+        if (data.hideVn) this.currentLine.hideVn = data.hideVn == "true" ? true : false;
     }
     #onPlay(_n, o) {
         this.#updateCmd(o.text);
         this.#updateBg(this.currentLine.bg);
         if (this.currentLine.bgCol) this.vn.container.css('background-color', this.currentLine.bgCol);
+        if (this.currentLine.hideVn) {
+            $("#dialog").removeClass("d-flex");
+
+            $("#dialog").css({ "display": "none" });
+        } else if (this.currentLine.hideVn == false) {
+            $("#dialog")[0].className = "d-flex p-2";
+            $("#dialog").attr("css", "");
+        }
+
     }
     _handleMaxLine() {
         this.onPlay(this.maxLine, this.lines[this.maxLine]);

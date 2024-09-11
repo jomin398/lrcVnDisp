@@ -1,4 +1,5 @@
 import { EventEmitter } from "../util/index.js";
+import JSZip from "jszip";
 export default class FileUploader extends EventEmitter {
     constructor(options) {
         super();
@@ -19,7 +20,23 @@ export default class FileUploader extends EventEmitter {
         dragleave: "#fff",
         fileupload: "#fff"
     }
+    async handleZipFile(zipFile) {
+        const zip = await JSZip.loadAsync(zipFile);
+        const zipFiles = [];
 
+        await Promise.all(
+            Object.keys(zip.files).map(async (filename) => {
+                const file = zip.files[filename];
+                if (!file.dir) {
+                    const fileData = await file.async("blob");
+                    const fileObj = new File([fileData], filename);
+                    zipFiles.push(fileObj);
+                }
+            })
+        );
+
+        return zipFiles;
+    }
     init(dropZone, fileInput) {
         const properties = ['dropZone', 'fileInput'];
         const elements = [dropZone, fileInput];
@@ -112,11 +129,23 @@ export default class FileUploader extends EventEmitter {
                     files.push(...dirFiles);
                 } else if (entry.filesystem) {
                     const file = await new Promise((resolve) => entry.file(resolve));
-                    files.push(file);
+                    if (file.name.endsWith(".zip")) {
+                        const zipFiles = await this.handleZipFile(file);
+                        files.push(...zipFiles);
+                    } else {
+                        files.push(file);
+                    }
                 }
             }));
         } else if (event.type === "change") {
-            files = Array.from(event.target.files);
+            for (let file of Array.from(event.target.files)) {
+                if (file.name.endsWith(".zip")) {
+                    const zipFiles = await this.handleZipFile(file);
+                    files.push(...zipFiles);
+                } else {
+                    files.push(file);
+                }
+            }
         }
 
         this.allFiles.push(...files); // 모든 파일을 allFiles에 추가

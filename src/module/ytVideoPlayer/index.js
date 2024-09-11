@@ -30,19 +30,22 @@ export class YTVideoPlayer {
             $(".backgroundWrap").append(
                 `<video preload="auto" id="my-player" class="video-js"></video>`
             );
-            const onready = () => {
-                this.timer.start();
-                $(".backgroundWrap").css({
-                    "margin-bottom": `${$("#dialog").innerHeight()}px`,
-                });
-            };
             ytplayerOpt.sources[0].src = this.cmdMgr.currentLine.ytVod;
             this.player = videojs("my-player", ytplayerOpt);
-            this.player.on("ready", onready);
+            this.player.on("ready", this.onready.bind(this));
             this.#addEventSubscribe(this.timer);
         }
     }
-
+    onready() {
+        this.timer.start();
+        setTimeout(() => {
+            const space = this.player.tech_.ytPlayer.playerInfo.videoContentRect.left;
+            $("#dialog").css({
+                "bottom": "2em",
+                "margin": `0 ${space}px`
+            });
+        }, 1000)
+    }
     #addEventSubscribe(timer) {
         addEventSubscribe(this.subscriptions, timer, 'tick', () => {
             if (!this.player.seeking()) {

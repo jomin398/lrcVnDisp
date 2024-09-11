@@ -1,4 +1,4 @@
-export const supportCmds = ["bg", "tEffect", "tAni", "tShadowCol", "tHlCol", "tCol", "tPos", "label", "tSpeed", "bgCol", "tAppend", "tShadow", "ytVod", "lrcOff"];
+export const supportCmds = ["bg", "tEffect", "tAni", "tShadowCol", "tHlCol", "tCol", "tPos", "label", "tSpeed", "bgCol", "tAppend", "tShadow", "ytVod", "lrcOff", "hideVn"];
 export function parseCmd(string) {
     // bg 함수 인자 추출
     const bgRegex = /bg\("([^"]*)",?([^)]*)\)/g;

@@ -28,7 +28,7 @@ export default class VnDisp {
         }
         /** @type {?WaveSurfer} */
         this.wavesurfer = null;
-        /** @type {?Object} ytPlayer */
+        /** @type {?YTVideoPlayer} ytPlayer */
         this.ytPlayer = null;
         /** @type {?TextRenderer[]} */
         this.textAnims = null;
@@ -56,8 +56,8 @@ export default class VnDisp {
             this.cmdMgr = new CmdMgr({ ...this.options, isCmdLine: true, vnDisp: this, offset: 0 });
             const cmds = this.assets.cmd instanceof String ? await (await fetch(this.assets.cmd)).text() : await this.assets.cmd.text();
             this.cmdMgr.setLyric(cmds);
-
             let hasBg = this.cmdMgr.lines.map(line => line.text.bg?.src).some(src => src !== null) ?? false;
+            if (this.cmdMgr.currentLine.ytVod != null) hasBg = true;
             /*
             명령어에서 한번이라도 배경 이미지 사용하지 않으면 검은 화면이라 textbox 가 보이지 않음.
             그래서 noBg라고 class 를 붙여서 css 로 textbox 를 보이게 처리.
@@ -111,7 +111,8 @@ export default class VnDisp {
     }
 
     async initAudio() {
-        if (this.assets.audios && this.assets.audios.length) {
+        // video mode false to add audio.
+        if (!this.cmdMgr.currentLine.ytVod && this.assets.audios && this.assets.audios.length) {
             this.wavesurfer = await initWavesurfer(this.assets.audios[0]);
             this.play = () => this.wavesurfer.play();
             this.pause = () => this.wavesurfer.pause();
