@@ -22,7 +22,7 @@ const dialog = `<div id="dialog" class="d-flex p-2">
     </div>
 </div>`;
 export const defaultTpl = `<div class="d-flex w-100 h-100">
-    <div id="vnDisp" class="flex-grow-1">
+    <div id="vnDisp" class="d-flex flex-grow-1">
         <div class="backgroundWrap"></div>
         ${dialog}
     </div>

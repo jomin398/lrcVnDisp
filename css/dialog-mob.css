@@ -1,0 +1,71 @@
+@media only screen and (max-width: 1023px) {
+  #waveform {
+    background-color: #000;
+    position: relative !important;
+    padding: 0 !important;
+  }
+  #dialog {
+    position: relative;
+    padding: 0 !important;
+    bottom: unset !important;
+  }
+  .backgroundWrap {
+    position: relative !important;
+  }
+}
+
+/* Landscape */
+@media (max-width: 1023px) and (orientation: landscape) {
+  :root {
+    --dispWidth: 360px;
+  }
+  #vnDisp {
+    display: grid !important;
+    grid-template-columns: var(--dispWidth) 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "backgroundWrap dialog";
+    gap: 0.5em;
+  }
+  #dialog .name {
+    font-size: 1em;
+    width: 25em;
+  }
+  #dialog .controls {
+    padding: 0;
+  }
+  #dialog .controls li {
+    padding: 2px 5px;
+    font-size: 1em;
+  }
+  #dialog .content {
+    height: 4.5em;
+    overflow: hidden;
+  }
+  #dialog .content .text {
+    font-size: 1.1em;
+  }
+  .backgroundWrap {
+    padding: 0 !important;
+  }
+  .backgroundWrap .bg {
+    object-fit: contain;
+  }
+}
+/* Portrait */
+@media (max-width: 1023px) and (orientation: portrait) {
+  #vnDisp {
+    flex-direction: column !important;
+  }
+  .backgroundWrap {
+    height: 300px;
+  }
+  .wrapper header {
+    flex-direction: column !important;
+  }
+  #dialog .name {
+    align-self: center;
+  }
+  #dialog .content .text {
+    font-size: 1.5em;
+  }
+}

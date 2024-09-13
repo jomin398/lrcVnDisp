@@ -1,18 +1,23 @@
-//project ref https://webvn.liriliri.io/
-
 import FileUploader from "./module/usb/upload.js";
 import VnDisp from "./module/vnDisp/index.js";
 
-await new Promise(r => window.onload = () => r(1));
+await new Promise((r) => (window.onload = () => r(1)));
 
 const dropZone_l = document.querySelector(".drop-zone._l");
 const fileInput_l = document.getElementById("file-input_l");
+const fileInput_mobile = document.getElementById("file-input_mobile");
 const uploadModal_l = new bootstrap.Modal("#uploadModal_l");
 const gitRibbon = $(".github-fork-ribbon");
 uploadModal_l.show();
 const fileUploader_l = new FileUploader({
     dropZone: dropZone_l,
     fileInput: fileInput_l,
+    side: "left"
+});
+// 모바일용 FileUploader 인스턴스 생성
+const fileUploader_mobile = new FileUploader({
+    dropZone: dropZone_l,
+    fileInput: fileInput_mobile,
     side: "left"
 });
 async function assetPreProc(assetManager) {
@@ -40,17 +45,20 @@ async function assetPreProc(assetManager) {
 }
 const onload = async ({ assets, assetManager }) => {
     const vn = VnDisp.create({
-        assets, assetManager
+        assets,
+        assetManager
     });
     await vn.init();
-
-}
-const uploadHandler = async () => {
-    const assets = await assetPreProc(fileUploader_l); // assetPreProc 호출
+};
+const uploadHandler = async (uploader) => {
+    const assets = await assetPreProc(uploader); // assetPreProc 호출
     uploadModal_l.hide();
     gitRibbon.hide();
     await onload(assets); // onload 호출
 };
 // 이벤트 리스너 등록
-fileUploader_l.on("fileDrop", uploadHandler);
-fileUploader_l.on("fileInputChange", uploadHandler);
+fileUploader_l.on("fileDrop", () => uploadHandler(fileUploader_l));
+fileUploader_l.on("fileInputChange", () => uploadHandler(fileUploader_l));
+
+// 모바일 파일 입력도 같은 핸들러 사용
+fileUploader_mobile.on("fileInputChange", () =>uploadHandler(fileUploader_mobile));

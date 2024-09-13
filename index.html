@@ -32,6 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/videojs-youtube@latest/dist/Youtube.min.js"></script>
     <link rel="stylesheet" href="./css/keyframes.css" />
     <link rel="stylesheet" href="./css/dialog.css" />
+    <link rel="stylesheet" href="./css/dialog-mob.css" />
     <link rel="stylesheet" href="./css/textani.css" />
     <link rel="stylesheet" href="./css/body.css" />
     <script type="importmap">
@@ -74,12 +75,19 @@
           <div class="modal-body drop-zone _l">
             <p>Drag and drop files or folders here</p>
             <span>or</span>
+            <input
+              type="file"
+              id="file-input_l"
+              webkitdirectory
+              multiple
+              style="display: none"
+            />
             <label
-              for="file-input_l"
+              for="file-input_mobile"
               style="cursor: pointer; color: blue; text-decoration: underline"
               >select files</label
             >
-            <input type="file" id="file-input_l" webkitdirectory multiple />
+            <input type="file" id="file-input_mobile" multiple />
           </div>
         </div>
       </div>

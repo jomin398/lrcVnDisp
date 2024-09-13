@@ -1,5 +1,7 @@
 import Timer from "wavesurfer/timer.js";
 import { addEventSubscribe } from "../util/index.js";
+import CmdMgr from "../cmdMgr/index.js";
+import { LyricVn } from "../lrcVn/index.js";
 
 export const ytplayerOpt = {
     controls: true,
@@ -18,8 +20,10 @@ export const ytplayerOpt = {
 };
 
 export class YTVideoPlayer {
+    /** @param {{cmdMgr: CmdMgr,lyricMgr:LyricVn}} options */
     constructor(options) {
-        this.cmdMgr = options.cmdMgr; this.lyricMgr = options.lyricMgr;
+        this.cmdMgr = options.cmdMgr;
+        this.lyricMgr = options.lyricMgr;
         this.player = null;
         this.timer = null;
         this.subscriptions = [];
@@ -27,6 +31,7 @@ export class YTVideoPlayer {
     initialize() {
         if (this.cmdMgr && this.cmdMgr.currentLine.ytVod && this.lyricMgr) {
             this.timer = new Timer();
+            this.lyricMgr.vnMgr.container.css("--dispWidth", "420px");
             $(".backgroundWrap").append(
                 `<video preload="auto" id="my-player" class="video-js"></video>`
             );
@@ -41,13 +46,13 @@ export class YTVideoPlayer {
         setTimeout(() => {
             const space = this.player.tech_.ytPlayer.playerInfo.videoContentRect.left;
             $("#dialog").css({
-                "bottom": "2em",
-                "margin": `0 ${space}px`
+                bottom: "2em",
+                margin: `0 ${space}px`,
             });
-        }, 1000)
+        }, 1000);
     }
     #addEventSubscribe(timer) {
-        addEventSubscribe(this.subscriptions, timer, 'tick', () => {
+        addEventSubscribe(this.subscriptions, timer, "tick", () => {
             if (!this.player.seeking()) {
                 let currentTime = this.player.currentTime() * 1e3;
                 this.tickCallback(currentTime);

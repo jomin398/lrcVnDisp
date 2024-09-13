@@ -4,7 +4,6 @@ import { LyricVn } from "../lrcVn/index.js";
 import { initWavesurfer } from "../../initWavesurfer.js";
 import { addEventSubscribe } from "../util/index.js";
 import { default as CmdMgr } from "../cmdMgr/index.js";
-import Timer from "wavesurfer/timer.js";
 import WaveSurfer from "wavesurfer.js";
 import { YTVideoPlayer } from "../ytVideoPlayer/index.js";
 
