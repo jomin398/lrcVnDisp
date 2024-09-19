@@ -7,17 +7,15 @@ import Lyric from "../lyric/index.js";
  * @prop {CSSStyleDeclaration} style
  * @prop {any}
  */
-function bgiSearch(search, filelist) {
-    let r = filelist.filter(file => file.name.includes(search))[0];
-    if (r) r = URL.createObjectURL(r);
-    return r;
-}
+
 export default class CmdMgr extends Lyric {
     constructor(options) {
         super(options);
         /** @type {?VnDisp} */
         this.vn = options.vnDisp ?? null;
         this.onPlay = this.#onPlay;
+        this.bgMgr = this.vn.bgMgr;
+
         this.prev = {
             bg: null,
         };
@@ -54,30 +52,6 @@ export default class CmdMgr extends Lyric {
     get initLine() {
         return this.lines[0];
     }
-    #updateBg(setting) {
-
-        if (!setting) return;
-        if (this.prev.bg === setting) return;
-        if (setting.aniName === "null" || setting.src === "null") this.prev.bg = null;
-        if (!setting.src) return;
-
-        let { aniName, src } = setting;
-        const bgWrap = $('.backgroundWrap');
-        bgWrap.html(" ");
-        if (src == "null") return;
-
-        let bgiSearchResult = bgiSearch(src, this.vn.assets.images);
-
-        let bgElm = $(`<img  class="bg tAni-${aniName ?? "noAni"}" src="${bgiSearchResult ?? src}">`);
-        bgWrap.append(bgElm);
-        bgElm.css({
-            "animation-duration": "0.5s",
-        });
-        bgElm.attr("alt", `bgiError: Cannot Load url:${src}`)
-        this.prev.bg = setting;
-
-
-    }
     #updateCmd(data) {
         if (data.label) this.currentLine.label = data.label == "null" ? " " : data.label;
         if (data.tPos) this.currentLine.tPos = data.tPos == "default" ? "tl" : data.tPos;
@@ -100,7 +74,9 @@ export default class CmdMgr extends Lyric {
     }
     #onPlay(_n, o) {
         this.#updateCmd(o.text);
-        this.#updateBg(this.currentLine.bg);
+        // this.#updateBg(this.currentLine.bg);
+        this.bgMgr.cmd = this.currentLine;
+        this.bgMgr.update()
         if (this.currentLine.bgCol) this.vn.container.css('background-color', this.currentLine.bgCol);
         if (this.currentLine.hideVn) {
             $("#dialog").removeClass("d-flex");

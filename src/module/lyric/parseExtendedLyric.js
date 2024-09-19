@@ -1,6 +1,7 @@
-import { formatTimeLabel } from "./formatTimeLabel.js";
+import addOffsetToTimeLabel from "./addOffsetToTimeLabel.js";
+import formatTimeLabel from "./formatTimeLabel.js";
 import { timeFieldExp, timeExp } from './timeFieldExp.js';
-export function parseExtendedLyric(lrcLinesMap, extendedLyric) {
+export function parseExtendedLyric(lrcLinesMap, extendedLyric, offset) {
     const extendedLines = extendedLyric.split(/\r\n|\n|\r/);
     for (let i = 0; i < extendedLines.length; i++) {
         const line = extendedLines[i].trim();
@@ -13,7 +14,7 @@ export function parseExtendedLyric(lrcLinesMap, extendedLyric) {
                 if (times == null)
                     continue;
                 for (let time of times) {
-                    const timeStr = formatTimeLabel(time);
+                    const timeStr = addOffsetToTimeLabel(formatTimeLabel(text), offset);
                     const targetLine = lrcLinesMap[timeStr];
                     if (targetLine)
                         targetLine.extendedLyrics.push(text);

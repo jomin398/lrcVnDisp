@@ -6,6 +6,7 @@ import { addEventSubscribe } from "../util/index.js";
 import { default as CmdMgr } from "../cmdMgr/index.js";
 import WaveSurfer from "wavesurfer.js";
 import { YTVideoPlayer } from "../ytVideoPlayer/index.js";
+import BackGroundMgr from "../backGroundMgr/index.js";
 
 function getjsonFile(scripts) {
     return scripts.filter(file => file.name.endsWith(".json"))[0];
@@ -33,10 +34,14 @@ export default class VnDisp {
         this.textAnims = null;
         /** @type {?LyricVn} */
         this.lyricMgr = null;
+        /** @type {?CmdMgr} */
         this.cmdMgr = null;
+        /** @type {?BackGroundMgr} */
+        this.bgMgr = null;
         /** @type {?Boolean} toggle to bind onclick on dialog box */
         this.textVnMode = false;
         this.subscriptions = [];
+        this.globalOffset = 0;
         window.vn = this;
     }
 
@@ -49,19 +54,29 @@ export default class VnDisp {
     get assetMgr() {
         return this.options.assetManager;
     }
+    get dialogElm() {
+        return this.container.find("#dialog");
+    }
     async init() {
         this.textAnims = [];
+        this.bgMgr = new BackGroundMgr(".backgroundWrap", this.assets.images);
         if (this.assets.cmd) {
             this.cmdMgr = new CmdMgr({ ...this.options, isCmdLine: true, vnDisp: this, offset: 0 });
             const cmds = this.assets.cmd instanceof String ? await (await fetch(this.assets.cmd)).text() : await this.assets.cmd.text();
             this.cmdMgr.setLyric(cmds);
+            if (this.cmdMgr.currentLine.lrcOff && this.cmdMgr.currentLine.lrcOff > 0) {
+                this.globalOffset = this.cmdMgr.currentLine.lrcOff;
+                this.cmdMgr = new CmdMgr({ ...this.options, isCmdLine: true, vnDisp: this, offset: this.globalOffset });
+                this.cmdMgr.setLyric(cmds);
+            }
+
             let hasBg = this.cmdMgr.lines.map(line => line.text.bg?.src).some(src => src !== null) ?? false;
             if (this.cmdMgr.currentLine.ytVod != null) hasBg = true;
             /*
             명령어에서 한번이라도 배경 이미지 사용하지 않으면 검은 화면이라 textbox 가 보이지 않음.
             그래서 noBg라고 class 를 붙여서 css 로 textbox 를 보이게 처리.
             */
-            if (!hasBg) this.container.find("#dialog").addClass("noBg");
+            if (!hasBg) this.dialogElm.addClass("noBg");
         }
         if (this.assets.styles) {
             this.assets.styles.map(cssFile => {
@@ -97,7 +112,7 @@ export default class VnDisp {
     }
     async initLyrics(file) {
         this.textVnMode = false;
-        this.lyricMgr = new LyricVn({ isRemoveBlankLine: false, vnMgr: this, offset: 0 });
+        this.lyricMgr = new LyricVn({ isRemoveBlankLine: false, vnMgr: this, offset: this.globalOffset });
         if (!this.lyricMgr.lines.length) {
             const lyrics = file instanceof String ? await (await fetch(file)).text() : await file.text();
             this.lyricMgr.setLyric(lyrics);
@@ -111,7 +126,7 @@ export default class VnDisp {
 
     async initAudio() {
         // video mode false to add audio.
-        if (!this.cmdMgr.currentLine.ytVod && this.assets.audios && this.assets.audios.length) {
+        if (!this.cmdMgr?.currentLine.ytVod && this.assets.audios && this.assets.audios.length) {
             this.wavesurfer = await initWavesurfer(this.assets.audios[0]);
             this.play = () => this.wavesurfer.play();
             this.pause = () => this.wavesurfer.pause();

@@ -1,4 +1,4 @@
-export function formatTimeLabel(label) {
+export default function formatTimeLabel(label) {
     const t_rxp_1 = /^0+(\d+)/;
     const t_rxp_2 = /:0+(\d+)/g;
     const t_rxp_3 = /\.0+(\d+)/;

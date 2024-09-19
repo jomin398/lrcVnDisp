@@ -1,9 +1,10 @@
-import { formatTimeLabel } from "./formatTimeLabel.js";
+import addOffsetToTimeLabel from "./addOffsetToTimeLabel.js";
+import formatTimeLabel from "./formatTimeLabel.js";
 import { parseCmd } from "./parseCmd.js";
 import { parseExtendedLyric } from "./parseExtendedLyric.js";
 import { timeFieldExp, timeExp } from "./timeFieldExp.js";
 
-export function lrclineParse(lyric, extendedLyrics, isRemoveBlankLine, isCmdLine) {
+export function lrclineParse(lyric, extendedLyrics, isRemoveBlankLine, isCmdLine, offset) {
     let lines = [];
     let maxLine = 0;
     const splitedLines = lyric.split(/\r\n|\n|\r/);
@@ -20,7 +21,7 @@ export function lrclineParse(lyric, extendedLyrics, isRemoveBlankLine, isCmdLine
                 if (times == null)
                     continue;
                 for (let time of times) {
-                    const timeStr = formatTimeLabel(time);
+                    const timeStr = addOffsetToTimeLabel(formatTimeLabel(time), offset);
                     if (linesMap[timeStr]) {
                         linesMap[timeStr].extendedLyrics.push(isCmdLine ? parseCmd(text) : text);
                         continue;
@@ -43,7 +44,7 @@ export function lrclineParse(lyric, extendedLyrics, isRemoveBlankLine, isCmdLine
         }
     }
     for (const lrc of extendedLyrics)
-        parseExtendedLyric(linesMap, lrc);
+        parseExtendedLyric(linesMap, lrc, offset);
     lines = Object.values(linesMap);
     lines.sort((a, b) => {
         return a.time - b.time;

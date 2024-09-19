@@ -137,6 +137,7 @@ export class TextRenderer {
         this.applyTextPos(textWrapElm, pos);
         const newText = this.data.text;
         if (newText === this.prevText) return;
+        if (newText == undefined) return;
         this.length = newText.length;
         this.stopTimer();
         this.isPlaying = true;

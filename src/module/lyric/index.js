@@ -67,7 +67,7 @@ export default class Lyric {
         if (this.extendedLyrics == null)
             this.extendedLyrics = [];
         this.tags = parseLrcTags(this.lyric);
-        let { lines, maxLine } = lrclineParse(this.lyric, this.extendedLyrics, this.isRemoveBlankLine, this.isEnableParseCmd);
+        let { lines, maxLine } = lrclineParse(this.lyric, this.extendedLyrics, this.isRemoveBlankLine, this.isEnableParseCmd, this.offset);
         this.lines = lines;
         this.maxLine = maxLine;
         this.onSetLyric(this.lines);
