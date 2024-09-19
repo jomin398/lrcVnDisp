@@ -41,17 +41,27 @@ export class YTVideoPlayer {
             this.#addEventSubscribe(this.timer);
         }
     }
+    get ytModule() {
+        return this.player.tech_.ytPlayer;
+    }
+    disableCC() {
+        try {
+            Array.from(this.player.textTracks()).filter(({ kind }) => !['chapters', 'metadata'].includes(kind)).forEach((track) => track.mode = "disabled")
+            this.player.getCache().selectedLanguage = { enabled: false };
+            this.ytModule.unloadModule("captions");
+            this.ytModule.unloadModule("cc");
+        } catch (_e) { }
+    }
     onready() {
         this.timer.start();
-        Array.from(this.player.textTracks()).filter(({kind}) => !['chapters','metadata'].includes(kind)).forEach((track) => track.mode = "disabled")
-        this.player.getCache().selectedLanguage = { enabled: false };
         setTimeout(() => {
             const space = this.player.tech_.ytPlayer.playerInfo.videoContentRect.left;
             $("#dialog").css({
                 bottom: "2em",
                 margin: `0 ${space}px`,
             });
-            }, 1000);
+            this.disableCC();
+        }, 1000);
     }
     #addEventSubscribe(timer) {
         addEventSubscribe(this.subscriptions, timer, "tick", () => {
