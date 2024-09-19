@@ -38,6 +38,7 @@ export class YTVideoPlayer {
             ytplayerOpt.sources[0].src = this.cmdMgr.currentLine.ytVod;
             this.player = videojs("my-player", ytplayerOpt);
             this.player.on("ready", this.onready.bind(this));
+            this.player.on("play", this.onplay.bind(this));
             this.#addEventSubscribe(this.timer);
         }
     }
@@ -62,6 +63,9 @@ export class YTVideoPlayer {
             });
             this.disableCC();
         }, 1000);
+    }
+    onplay() {
+        this.disableCC();
     }
     #addEventSubscribe(timer) {
         addEventSubscribe(this.subscriptions, timer, "tick", () => {
