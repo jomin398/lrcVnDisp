@@ -1,5 +1,10 @@
+:root {
+  --tLinePrimCol: #ffffff;
+  --tLineSecCol: #39c5bb;
+}
+
 * {
-  font-family: 'Noto Sans', 'Noto Serif', Arial;
+  font-family: "Noto Sans", "Noto Serif", Arial;
 }
 
 html,

@@ -1,6 +1,7 @@
 export { default as isJQuery } from "./isJQ.js";
 export { default as EventEmitter } from "./event-emitter.js";
 export { default as fileReadText } from "./fileReadText.js";
+export { default as formAwaiter } from "./formAwaiter.js";
 export function findColorByText(obj, str) {
     // 문자열에서 ':' 이전의 부분을 추출
     const key = str.split(':')[0] + ':'; // ':' 포함

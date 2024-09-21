@@ -1,5 +1,5 @@
 
-export default function addOffsetToTimeLabel(label, offset) {
+export default function addOffsetToTimeLabel(label, offset, preventNegTime) {
     // 분, 초, 밀리초를 분리
     const [minutes, secondsWithMilliseconds] = label.split(":");
     const [seconds, milliseconds = "0"] = secondsWithMilliseconds.split(".");
@@ -8,7 +8,7 @@ export default function addOffsetToTimeLabel(label, offset) {
     let totalMilliseconds = Number(minutes) * 60 * 1000 +
         Number(seconds) * 1000 +
         Number(milliseconds.padEnd(3, "0"));
-
+    if (totalMilliseconds + offset < 0 && preventNegTime) { return null; };
     // 오프셋 적용 후 음수가 되지 않도록 보정
     totalMilliseconds = Math.max(0, totalMilliseconds + offset);
 

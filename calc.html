@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LRC 타임 계산기</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "lyric/": "./src/module/lyric/",
+          "formAwaiter": "./src/module/util/formAwaiter.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import formatTimeLabel from "lyric/formatTimeLabel.js";
+      import formAwaiter from "formAwaiter";
+      import addOffsetToTimeLabel from "lyric/addOffsetToTimeLabel.js";
+      //홈페이지 로드 대기
+      await new Promise((r) => (window.onload = () => r(1)));
+      const errorModal = new bootstrap.Modal(
+        document.getElementById("errorModal")
+      );
+      const resultModal = new bootstrap.Modal(
+        document.getElementById("resultModal")
+      );
+      document
+        .getElementById("timeForm")
+        .addEventListener("submit", async function (event) {
+          const form = await formAwaiter(event.target);
+          const timestamp = form.timestamp.value;
+          const offset = parseInt(form.offset.value);
+          const result = addOffsetToTimeLabel(timestamp, offset, true);
+          if (!result) errorModal.show();
+          else {
+            document.getElementById("result").innerText = result;
+            resultModal.show();
+          }
+        });
+    </script>
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
+        />
+      </symbol>
+      <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path
+          d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+        />
+      </symbol>
+      <symbol
+        id="exclamation-triangle-fill"
+        fill="currentColor"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+        />
+      </symbol>
+    </svg>
+    <div class="container mt-5">
+      <h2>LRC 타임 계산기</h2>
+      <form id="timeForm">
+        <div class="mb-3">
+          <label for="timestamp" class="form-label"
+            >타임 스탬프 [몇분:몇초.밀리초]</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="timestamp"
+            name="timestamp"
+            required
+            placeholder="분:초.밀리초"
+            value="00:00.000"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="offset" class="form-label">오프셋 (밀리초)</label>
+          <input
+            type="number"
+            class="form-control"
+            id="offset"
+            name="offset"
+            required
+            placeholder="200"
+            value="200"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">확인</button>
+      </form>
+    </div>
+
+    <!-- 결과 Modal -->
+    <div
+      class="modal fade"
+      id="resultModal"
+      tabindex="-1"
+      aria-labelledby="resultModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="resultModalLabel">결과</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>계산된 Timestamp :</p>
+            <p id="result"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 에러표시 -->
+    <div
+      class="modal fade"
+      id="errorModal"
+      tabindex="-1"
+      aria-labelledby="errorModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content text-bg-danger">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <svg
+                class="bi flex-shrink-0 me-2"
+                width="24"
+                height="24"
+                role="img"
+                aria-label="Danger:"
+              >
+                <use xlink:href="#exclamation-triangle-fill" />
+              </svg>
+              <span id="errorModalLabel">에러</span>
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p id="errorMessage">입력된 offset는 시작점인 0 초를 초과합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
